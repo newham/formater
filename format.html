@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>格式化</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+	<!-- <script src="main.js"></script> -->
+	<link href="asserts/css/bootstrap.min.css" rel="stylesheet">
+	<script src="asserts/js/jquery.min.js"></script>
+	<script src="asserts/js/md5.js"></script>
+	<style type="text/css">
+		body {
+			background: #fff;
+			/* background: #d1d1d1; */
+		}
+
+		textarea {
+			resize: none;
+		}
+
+		.bar {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			background: DarkGreen;
+			/* background-image: url('./asserts/img/bar_bg.jpg'); */
+			/* background:#0063B1; */
+			background-size: 100% 100%;
+			color: #fff;
+			border-bottom: 1px solid darkgray;
+		}
+
+		.txt {
+			margin-top: 10px;
+			width: 100%;
+			border-radius: 0px;
+		}
+
+		.btn {
+			/* box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 6px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+			border-radius: 0px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="bar">
+		<div class="container ">
+			<!-- <div class="btn-group"> -->
+			<!-- <label class="radio-inline">
+				原文语言：
+			</label> -->
+			<div class="text-center">
+				<label class="radio-inline" style="margin-right:10px;">
+					<input type="radio" name="optionsRadiosinline" id="options_en" checked> 英文
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="optionsRadiosinline" id="options_zh"> 中文
+				</label>
+			</div>
+			<!--
+			<button type="button" class="btn btn-danger" onclick="clean()">
+				<span class="glyphicon glyphicon-remove-sign"></span> 清除
+			</button>
+			<button type="button" class="btn btn-warning" onclick="paste()">
+				<span class="glyphicon glyphicon-plus-sign"></span> 粘贴
+			</button>
+			<button onclick="copyText()" class="btn btn-success">
+				<span class="glyphicon glyphicon-ok-sign"></span> 复制
+			</button>
+			=
+			-->
+			<div style="margin-top: 8px;">
+				<button onclick="format()" class="btn btn-success btn-block">
+					<!-- <span class="glyphicon glyphicon-ok-sign"></span> -->
+					一键粘贴复制
+				</button>
+			</div>
+
+			<!-- </div> -->
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<textarea rows="8" id="inputstr" name="InputString" class="form-control txt"
+					placeholder="实时删除文本中的新行、制表键、空格、回车、换行，并半角化"></textarea>
+			</div>
+			<div class="col-xs-12 col-md-12">
+				<textarea rows="8" id="outputstr" name="OutString" class="form-control txt" placeholder="格式化文本"
+					readonly="readonly"></textarea>
+				<button class="btn btn-default btn-block" onclick="copyText('outputstr')">复制</button>
+			</div>
+			<!-- <div class="col-xs-12 col-md-12">翻译：</div> -->
+			<div class="col-xs-12 col-md-12">
+				<textarea rows="8" id="translate" name="translate" class="form-control txt" readonly="readonly"
+					placeholder="Baidu翻译"></textarea>
+				<button class="btn btn-default btn-block" onclick="copyText('translate')">复制</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		var from = 'en';
+		var to = 'zh';
+		function clean() {
+			$("#inputstr").val("");
+			$("#outputstr").val("");
+			$("#translate").val("");
+		}
+
+		function paste() {
+			$("#inputstr").select(); // 选中文本
+			document.execCommand("Paste"); // 执行浏览器复制命令
+			StrReplace();
+		}
+
+		function format() {
+			clean();
+			paste();
+			translate();
+			copyText('outputstr');
+		}
+
+		// 全角转半角
+		function ToCDB(str) {
+			var tmp = "";
+			for (var i = 0; i < str.length; i++) {
+				if (str.charCodeAt(i) == 12288) {
+					tmp += String.fromCharCode(str.charCodeAt(i) - 12256);
+					continue;
+				}
+				if (str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375) {
+					tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
+				}
+				else {
+					tmp += String.fromCharCode(str.charCodeAt(i));
+				}
+			}
+			return tmp
+		}
+
+		function StrReplace() {
+			var StrInput = $("#inputstr").val();
+			// 中文，去掉空格
+			if ($("#options_zh").attr("checked")) {
+				StrInput = formatStr(StrInput, "");
+				StrInput = replaceSpace(StrInput, "");
+				from = 'zh';
+				to = 'en';
+			} else { //英文，不去空格，回车转空格
+				StrInput = formatStr(StrInput, " ");
+				from = 'en';
+				to = 'zh';
+			}
+			//都要转半角
+			StrInput = ToCDB(StrInput);
+			$("#outputstr").val(StrInput);
+		}
+
+		// 替换回车
+		function formatStr(strInput, str) {
+			strInput = strInput.replace(/\n/ig, str);
+			return strInput;
+		}
+
+		// 替换空格
+		function replaceSpace(strInput, str) {
+			return strInput.replace(/[ ]/g, str);
+		}
+
+		$(function () {
+			$("#inputstr").keyup(function () {
+				StrReplace();
+			});
+		});
+
+		function copyText(id) {
+			$("#"+id).select(); // 选中文本
+			document.execCommand("Copy"); // 执行浏览器复制命令
+		}
+
+		function translate() {
+			var appid = '20190519000299180';
+			var key = 'JJR47pfMUM_gPF9Ea5gZ';
+			var salt = (new Date).getTime();
+			var query = $("#outputstr").val();
+			// 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
+			var str1 = appid + query + salt + key;
+			var sign = MD5(str1);
+			$("#translate").val("正在翻译...");
+			$.ajax({
+				url: 'https://fanyi-api.baidu.com/api/trans/vip/translate',
+				type: 'post',
+				dataType: 'jsonp',
+				data: {
+					q: query,
+					appid: appid,
+					salt: salt,
+					from: from,
+					to: to,
+					sign: sign
+				},
+				success: function (data) {
+					console.log(data);
+					$("#translate").val(data.trans_result[0].dst);
+				},
+				error: function (data) {
+					$("#translate").val(data);
+					console.log(data);
+				}
+			});
+		}
+
+	</script>
+
+</body>
+
+</html>

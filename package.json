@@ -1,0 +1,29 @@
+{
+  "name": "formater",
+  "version": "1.0.0",
+  "description": "formater",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack_mac": "electron-packager . formater --icon=./icon.icns --platform=darwin --out ./out/mac --arch=x64 --app-version=0.0.1 --electron-version=4.0.0 --overwrite",
+    "pack_win": "electron-packager . formater --icon=./icon.ico --platform=win32 --out ./out/win --arch=x64 --app-version=0.0.1 --electron-version=4.0.0 --overwrite",
+    "pack_linux": "electron-packager . formater --icon=./icon.ico --platform=linux --out ./out/linux --arch=x64 --app-version=0.0.1 --electron-version=4.0.0 --overwrite",
+    "build_mac":"electron-builder build --mac --x64"
+  },
+  "build": {
+    "productName":"formater", 
+    "appId": "cn.liuhan.formater",
+    "directories": {
+      "output": "out"
+    }, 
+    "mac": {
+      "icon": "./icon.icns"
+    }
+  },
+  "author": "liuhan",
+  "license": "ISC",
+  "devDependencies":{
+    "electron": "^4.0.0"
+  }
+}
