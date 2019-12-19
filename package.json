@@ -6,23 +6,24 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build_mac":"electron-builder build --mac --x64",
-    "build_linux":"electron-builder build --linux deb --x64",
-    "build_win":"electron-builder build --win --x64"
+    "build_mac": "electron-builder build --mac --x64",
+    "build_linux": "electron-builder build --linux deb --x64",
+    "build_win": "electron-builder build --win --x64"
   },
   "build": {
-    "productName":"formater", 
+    "productName": "formater",
     "appId": "cn.liuhan.formater",
     "directories": {
       "output": "out"
-    }, 
+    },
     "mac": {
       "icon": "./icon.icns"
     }
   },
   "author": "liuhan",
   "license": "ISC",
-  "devDependencies":{
-    "electron": "^4.0.0"
+  "devDependencies": {
+    "electron": "^4.0.0",
+    "electron-builder": "^21.2.0"
   }
 }
