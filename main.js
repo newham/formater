@@ -34,7 +34,7 @@ function openWindow(){
 function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
-        mainWindow = new BrowserWindow({ width: 520, height: 730, minWidth: 520, minHeight: 730, resizable: false })
+        mainWindow = new BrowserWindow({ width: 520, height: 760, minWidth: 520, minHeight: 760, resizable: false })
         //首页
         mainWindow.loadFile('format.html');
         //注册关闭事件
