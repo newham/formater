@@ -24,15 +24,15 @@
 		}
 
 		.bar {
-			padding-top: 5px;
-			padding-bottom: 5px;
-			/* background: black; */
-			background: DarkGreen;
+			padding-top: 10px;
+			/* padding-bottom: 5px; */
+			/* background: #aaa; */
+			/* background: DarkGreen; */
 			/* background-image: url('./asserts/img/bar_bg.jpg'); */
 			/* background:#0063B1; */
 			background-size: 100% 100%;
 			color: #fff;
-			border-bottom: 1px solid darkgray;
+			/* border-bottom: 1px solid #aaa; */
 		}
 
 		.txt {
@@ -55,7 +55,7 @@
 			<!-- <label class="radio-inline">
 				原文语言：
 			</label> -->
-			<div class="text-center" style="margin-right:10px;">
+			<!-- <div class="text-center" style="margin-right:10px;">
 				<label class="radio-inline">原文:</label>
 				<label class="radio-inline">
 					<input type="radio" name="optionsRadiosinline" id="options_en" checked> 英文(英语->中文)
@@ -63,7 +63,7 @@
 				<label class="radio-inline">
 					<input type="radio" name="optionsRadiosinline" id="options_zh"> 中文(中文->英文)
 				</label>
-			</div>
+			</div> -->
 			<!--
 			<button type="button" class="btn btn-danger" onclick="clean()">
 				<span class="glyphicon glyphicon-remove-sign"></span> 清除
@@ -76,7 +76,7 @@
 			</button>
 			=
 			-->
-			<div style="margin-top: 8px;">
+			<div>
 				<button onclick="format()" class="btn btn-success btn-block">
 					<!-- <span class="glyphicon glyphicon-ok-sign"></span> -->
 					一键粘贴复制格式化文本
@@ -93,18 +93,18 @@
 				<textarea rows="8" id="inputstr" name="InputString" class="form-control txt"
 					placeholder="实时删除文本中的新行、制表键、空格、回车、换行，并半角化"></textarea>
 				<button class="btn btn-danger col-xs-6" onclick="clean()">清空</button>
-				<button class="btn btn-success col-xs-6" onclick="doTranslate()">翻译</button>
+				<button class="btn btn-primary col-xs-6" onclick="doTranslate()">回车翻译</button>
 			</div>
 			<div class="col-xs-12 col-md-12">
 				<textarea rows="8" id="outputstr" name="OutString" class="form-control txt" placeholder="格式化文本"
 					readonly="readonly"></textarea>
-				<button class="btn btn-default btn-block" onclick="copyText('outputstr')">复制</button>
+				<button class="btn btn-info btn-block" onclick="copyText('outputstr')">复制</button>
 			</div>
 			<!-- <div class="col-xs-12 col-md-12">翻译：</div> -->
 			<div class="col-xs-12 col-md-12">
 				<textarea rows="8" id="translate" name="translate" class="form-control txt" readonly="readonly"
 					placeholder="Baidu翻译"></textarea>
-				<button class="btn btn-default btn-block" onclick="copyText('translate')">复制</button>
+				<button class="btn btn-info btn-block" onclick="copyText('translate')">复制</button>
 			</div>
 		</div>
 	</div>
@@ -112,6 +112,7 @@
 	<script>
 		var from = 'en';
 		var to = 'zh';
+		var tip = "正在翻译..."
 		function clean() {
 			$("#inputstr").val("");
 			$("#outputstr").val("");
@@ -131,6 +132,13 @@
 			copyText('outputstr');
 		}
 
+		function isChinese(str) {
+			var pattern = new RegExp("[\u4E00-\u9FA5]+");
+			if (pattern.test(str)) {
+				return true;
+			}
+			return false;
+		}
 		// 全角转半角
 		function ToCDB(str) {
 			var tmp = "";
@@ -149,13 +157,15 @@
 			return tmp
 		}
 
-		function setLan(){
-			if ($("#options_zh").attr("checked")) {
+		function setLan() {
+			if (isChinese($("#inputstr").val())) {//中文
 				from = 'zh';
 				to = 'en';
-			}else { //英文，不去空格，回车转空格{
+				tip = 'translating...';
+			} else { //英文，不去空格，回车转空格{
 				from = 'en';
 				to = 'zh';
+				tip = '正在找【百度】翻译...';
 			}
 		}
 
@@ -164,7 +174,7 @@
 			setLan();
 			var StrInput = $("#inputstr").val();
 			// 中文，去掉空格
-			if ($("#options_zh").attr("checked")) {
+			if (isChinese(StrInput)) {
 				StrInput = formatStr(StrInput, "");
 				StrInput = replaceSpace(StrInput, "");
 			} else { //英文，不去空格，回车转空格
@@ -190,6 +200,13 @@
 			$("#inputstr").keyup(function () {
 				StrReplace();
 			});
+			// 回车事件
+			$("#inputstr").keypress(function (e) {
+				if (e.which == 13) {
+					doTranslate();
+					return false;
+				}
+			});
 		});
 
 		function copyText(id) {
@@ -197,9 +214,9 @@
 			document.execCommand("Copy"); // 执行浏览器复制命令
 		}
 
-		function doTranslate(){
-			$("#translate").val("正在翻译...");
+		function doTranslate() {
 			setLan();
+			$("#translate").val(tip);
 			baiduTrans();
 		}
 
