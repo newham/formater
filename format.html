@@ -25,14 +25,15 @@
 
 		.bar {
 			padding-top: 10px;
-			/* padding-bottom: 5px; */
+			padding-bottom: 7px;
+			border-bottom: 1px solid #aaa;
 			/* background: #aaa; */
 			/* background: DarkGreen; */
 			/* background-image: url('./asserts/img/bar_bg.jpg'); */
 			/* background:#0063B1; */
 			background-size: 100% 100%;
+			background: #d1d1d1;
 			color: #fff;
-			/* border-bottom: 1px solid #aaa; */
 		}
 
 		.txt {
@@ -45,25 +46,22 @@
 			/* box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 6px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
 			border-radius: 0px;
 		}
+
+		.btn-default {
+			border-top: 0px;
+		}
 	</style>
 </head>
 
 <body>
 	<div class="bar">
+
 		<div class="container ">
 			<!-- <div class="btn-group"> -->
 			<!-- <label class="radio-inline">
 				原文语言：
 			</label> -->
-			<!-- <div class="text-center" style="margin-right:10px;">
-				<label class="radio-inline">原文:</label>
-				<label class="radio-inline">
-					<input type="radio" name="optionsRadiosinline" id="options_en" checked> 英文(英语->中文)
-				</label>
-				<label class="radio-inline">
-					<input type="radio" name="optionsRadiosinline" id="options_zh"> 中文(中文->英文)
-				</label>
-			</div> -->
+
 			<!--
 			<button type="button" class="btn btn-danger" onclick="clean()">
 				<span class="glyphicon glyphicon-remove-sign"></span> 清除
@@ -82,7 +80,15 @@
 					一键粘贴复制格式化文本
 				</button>
 			</div>
-
+			<div class="text-center" style="margin-top: 5px;color: #000;">
+				<label class="radio-inline">复制:</label>
+				<label class="radio-inline">
+					<input type="radio" name="copy_type" value="format" checked "> 格式化
+				</label>
+				<label class=" radio-inline">
+					<input type="radio" name="copy_type" value="trans"> 翻译
+				</label>
+			</div>
 			<!-- </div> -->
 		</div>
 	</div>
@@ -92,19 +98,19 @@
 			<div class="col-xs-12 col-md-12">
 				<textarea rows="8" id="inputstr" name="InputString" class="form-control txt"
 					placeholder="实时删除文本中的新行、制表键、空格、回车、换行，并半角化"></textarea>
-				<button class="btn btn-danger col-xs-6" onclick="clean()">清空</button>
-				<button class="btn btn-primary col-xs-6" onclick="doTranslate()">回车翻译</button>
+				<button class="btn btn-default col-xs-6" onclick="clean()">清空</button>
+				<button class="btn btn-default col-xs-6" style="border-left: 0;" onclick="doTranslate()">回车翻译</button>
 			</div>
 			<div class="col-xs-12 col-md-12">
 				<textarea rows="8" id="outputstr" name="OutString" class="form-control txt" placeholder="格式化文本"
 					readonly="readonly"></textarea>
-				<button class="btn btn-info btn-block" onclick="copyText('outputstr')">复制</button>
+				<button class="btn btn-default btn-block" onclick="copyText('outputstr')">复制</button>
 			</div>
 			<!-- <div class="col-xs-12 col-md-12">翻译：</div> -->
 			<div class="col-xs-12 col-md-12">
 				<textarea rows="8" id="translate" name="translate" class="form-control txt" readonly="readonly"
 					placeholder="Baidu翻译"></textarea>
-				<button class="btn btn-info btn-block" onclick="copyText('translate')">复制</button>
+				<button class="btn btn-default btn-block" onclick="copyText('translate')">复制</button>
 			</div>
 		</div>
 	</div>
@@ -129,7 +135,6 @@
 			clean();
 			paste();
 			doTranslate();
-			copyText('outputstr');
 		}
 
 		function isChinese(str) {
@@ -214,13 +219,24 @@
 			document.execCommand("Copy"); // 执行浏览器复制命令
 		}
 
+		function getCopyType() {
+			return $('input:radio[name=copy_type]:checked').val();
+		}
+
 		function doTranslate() {
 			setLan();
 			$("#translate").val(tip);
-			baiduTrans();
+			// 判断复制的对象
+			copy = false;
+			if (getCopyType() == 'trans') {
+				copy = true;
+			} else {
+				copyText('outputstr');
+			}
+			baiduTrans(copy);
 		}
 
-		function baiduTrans() {
+		function baiduTrans(copy) {
 			// 调用百度翻译API
 			var appid = '20190519000299180';
 			var key = 'JJR47pfMUM_gPF9Ea5gZ';
@@ -244,6 +260,9 @@
 				success: function (data) {
 					console.log(data);
 					$("#translate").val(data.trans_result[0].dst);
+					if (copy) {
+						copyText('translate');
+					}
 				},
 				error: function (data) {
 					$("#translate").val(data);
