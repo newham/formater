@@ -13,4 +13,4 @@ exe see in out/
 
 ## cap
 
-<img src="cap.png">
+<img src="cap.jpg">
