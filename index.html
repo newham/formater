@@ -5,100 +5,110 @@
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <link rel="stylesheet" href="asserts/css/materialize.min.css">
     <!--Import jQuery before materialize.js-->
     <script src="asserts/js/jquery.min.js"></script>
     <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <script src="asserts/js/materialize.min.js"></script>
     <!-- md5 -->
     <script src="asserts/js/md5.js"></script>
     <style type="text/css">
         body {
             margin: 0;
+            padding-top: 5px;
+            overflow-y: hidden;
         }
 
         textarea {
             overflow-y: scroll !important;
             border-top: 0;
-            border-left: 3px solid #4caf50;
+            border-left: 0;
             border-right: 0;
-            border-bottom: 0;
+            border-bottom: 1px solid #eee;
             resize: none;
-            height: 120px;
+            height: 159px;
             outline: none;
+            padding: 3px;
         }
 
         textarea:focus {
-            border-left: 3px solid #ffa000;
+            border-bottom: 1px solid #4caf50;
+        }
+
+        .card .card-content {
+            padding: 0px;
+        }
+
+        .card .card-action {
+            padding: 10px !important;
+        }
+
+        .card {
+            margin: 0px;
+        }
+
+        .row .col {
+            padding: 0px;
         }
     </style>
 </head>
 
-<body style="padding-top: 10px;" class="grey lighten-4">
-    <div class="container">
-        <div class="row">
-            <div class="col s12 center-align">
-                <a onclick="format()" class="btn-floating btn-large waves-effect waves-light green z-depth-3"><i
-                        class="material-icons">translate</i></a>
-                <!-- <div class="switch">
+<body class="grey lighten-4">
+    <!-- <div class="container"> -->
+    <div class="row" style="margin-bottom: 0;">
+        <div class="col s12 center-align">
+            <a onclick="format()" class="btn-floating btn-large waves-effect waves-light green z-depth-3">
+                <i class="material-icons">translate</i>
+            </a>
+        </div>
+        <div class="col s12" style="margin-top: -28px;">
+            <div class="card ">
+                <div class="right-align" style="padding: 10px;border-bottom: 1px solid #eeeeee;">
+                    <div class="switch">
                         <label>
-                            关
-                            <input type="checkbox">
+                            格式化
+                            <input type="checkbox" id="copy_type">
                             <span class="lever"></span>
-                            开
+                            翻译
                         </label>
-                    </div> -->
-            </div>
-            <div class="col s12" style="margin-top: -35px;">
-                <div class="card ">
-                    <div class="right-align" style="padding: 10px;">
-                        <div class="switch">
-                            <label>
-                                格式化
-                                <input type="checkbox" id="copy_type">
-                                <span class="lever"></span>
-                                翻译
-                            </label>
-                        </div>
-                    </div>
-                    <div class="card-content">
-
-                        <textarea placeholder=" 输入" id="inputstr"></textarea>
-
-                    </div>
-                    <div class="card-action right-align">
-                        <a href="#" onclick="clean()">清除</a>
-                        <a href="#" onclick="doTranslate()">翻译</a>
                     </div>
                 </div>
-            </div>
-            <div class="col s12">
-                <div class="card ">
-                    <div class="card-content">
-
-                        <textarea placeholder=" 格式化" id="outputstr"></textarea>
-
-                    </div>
-                    <div class="card-action right-align">
-                        <a href="#" onclick="copyText('outputstr')">复制</a>
-                    </div>
+                <div class="card-content">
+                    <textarea placeholder=" 输入" id="inputstr"></textarea>
                 </div>
-            </div>
-            <div class="col s12">
-                <div class="card ">
-                    <div class="card-content">
-
-                        <textarea placeholder=" Baidu翻译" id="translate"></textarea>
-
-                    </div>
-                    <div class="card-action right-align">
-                        <a href="#" onclick="copyText('translate')">复制</a>
-                    </div>
+                <div class="card-action right-align">
+                    <a href="#" onclick="clean()">清除</a>
+                    <a href="#" onclick="doTranslate()">翻译</a>
                 </div>
             </div>
         </div>
+        <div class="col s12">
+            <div class="card ">
+                <div class="card-content">
+                    <textarea placeholder=" 格式化" id="outputstr"></textarea>
+                </div>
+                <div class="card-action right-align">
+                    <a href="#" onclick="copyText('outputstr')">复制</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s12">
+            <div class="card ">
+                <div class="card-content">
+
+                    <textarea placeholder=" Baidu翻译" id="translate"></textarea>
+
+                </div>
+                <div class="card-action right-align">
+                    <a href="#" onclick="copyText('translate')">复制</a>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 right-align green" style="padding-right: 5px;color: white;"><span id="words_count"></span>字
+        </div>
     </div>
+    <!-- </div> -->
 
     <script>
         var from = 'en';
@@ -106,11 +116,8 @@
         var tip = "正在翻译..."
         function clean() {
             $("#inputstr").val("");
-            $('#inputstr').trigger('autoresize');
             $("#outputstr").val("");
-            $('#outputstr').trigger('autoresize');
             $("#translate").val("");
-            $('#translate').trigger('autoresize');
         }
 
         function paste() {
@@ -176,7 +183,6 @@
             //都要转半角
             StrInput = ToCDB(StrInput);
             $("#outputstr").val(StrInput);
-            $('#outputstr').trigger('autoresize');
         }
 
         // 替换回车
@@ -220,7 +226,6 @@
             }
             setLan();
             $("#translate").val(tip);
-            $('#translate').trigger('autoresize');
             // 判断复制的对象
             copy = false;
             if (getCopyType() == 'trans') {
@@ -255,18 +260,17 @@
                 success: function (data) {
                     if (data == null || data.trans_result == null) {
                         $("#translate").val('空');
-                        $("#translate").trigger('autoresize');
                         return;
                     }
                     $("#translate").val(data.trans_result[0].dst);
-                    $("#translate").trigger('autoresize');
                     if (copy) {
                         copyText('translate');
                     }
+                    //统计字数
+                    $("#words_count").text($("#inputstr").val().length + '/' + $("#outputstr").val().length + '/' + $("#translate").val().length)
                 },
                 error: function (data) {
                     $("#translate").val(data);
-                    $("#translate").trigger('autoresize');
                     console.log(data);
                 }
             });

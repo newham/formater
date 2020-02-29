@@ -36,7 +36,7 @@ function openMain() {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
             width: 520,
-            height: 840,
+            height: 716,
             resizable: false,
             title: '格式化&翻译',
         })
