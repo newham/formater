@@ -1,6 +1,278 @@
 <html>
-    <head></head>
-    <body>
-        <h1>Hello World</h1>
-    </body>
+
+<head>
+    <link rel="icon" href="icon.ico" type="image/x-icon" />
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <!--Import jQuery before materialize.js-->
+    <script src="asserts/js/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <!-- md5 -->
+    <script src="asserts/js/md5.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+        textarea {
+            overflow-y: scroll !important;
+            border-top: 0;
+            border-left: 3px solid #4caf50;
+            border-right: 0;
+            border-bottom: 0;
+            resize: none;
+            height: 120px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-left: 3px solid #ffa000;
+        }
+    </style>
+</head>
+
+<body style="padding-top: 10px;" class="grey lighten-4">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 center-align">
+                <a onclick="format()" class="btn-floating btn-large waves-effect waves-light green z-depth-3"><i
+                        class="material-icons">translate</i></a>
+                <!-- <div class="switch">
+                        <label>
+                            关
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            开
+                        </label>
+                    </div> -->
+            </div>
+            <div class="col s12" style="margin-top: -35px;">
+                <div class="card ">
+                    <div class="right-align" style="padding: 10px;">
+                        <div class="switch">
+                            <label>
+                                格式化
+                                <input type="checkbox" id="copy_type">
+                                <span class="lever"></span>
+                                翻译
+                            </label>
+                        </div>
+                    </div>
+                    <div class="card-content">
+
+                        <textarea placeholder=" 输入" id="inputstr"></textarea>
+
+                    </div>
+                    <div class="card-action right-align">
+                        <a href="#" onclick="clean()">清除</a>
+                        <a href="#" onclick="doTranslate()">翻译</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="card ">
+                    <div class="card-content">
+
+                        <textarea placeholder=" 格式化" id="outputstr"></textarea>
+
+                    </div>
+                    <div class="card-action right-align">
+                        <a href="#" onclick="copyText('outputstr')">复制</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="card ">
+                    <div class="card-content">
+
+                        <textarea placeholder=" Baidu翻译" id="translate"></textarea>
+
+                    </div>
+                    <div class="card-action right-align">
+                        <a href="#" onclick="copyText('translate')">复制</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var from = 'en';
+        var to = 'zh';
+        var tip = "正在翻译..."
+        function clean() {
+            $("#inputstr").val("");
+            $('#inputstr').trigger('autoresize');
+            $("#outputstr").val("");
+            $('#outputstr').trigger('autoresize');
+            $("#translate").val("");
+            $('#translate').trigger('autoresize');
+        }
+
+        function paste() {
+            $("#inputstr").select(); // 选中文本
+            document.execCommand("Paste"); // 执行浏览器复制命令
+            StrReplace();
+        }
+
+        function format() {
+            clean();
+            paste();
+            doTranslate();
+        }
+
+        function isChinese(str) {
+            var pattern = new RegExp("[\u4E00-\u9FA5]+");
+            if (pattern.test(str)) {
+                return true;
+            }
+            return false;
+        }
+        // 全角转半角
+        function ToCDB(str) {
+            var tmp = "";
+            for (var i = 0; i < str.length; i++) {
+                if (str.charCodeAt(i) == 12288) {
+                    tmp += String.fromCharCode(str.charCodeAt(i) - 12256);
+                    continue;
+                }
+                if (str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375) {
+                    tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
+                }
+                else {
+                    tmp += String.fromCharCode(str.charCodeAt(i));
+                }
+            }
+            return tmp
+        }
+
+        function setLan() {
+            if (isChinese($("#inputstr").val())) {//中文
+                from = 'zh';
+                to = 'en';
+                tip = 'translating...';
+            } else { //英文，不去空格，回车转空格{
+                from = 'en';
+                to = 'zh';
+                tip = '正在找【百度】翻译...';
+            }
+        }
+
+        function StrReplace() {
+            // 设置语言
+            setLan();
+            var StrInput = $("#inputstr").val();
+            // 中文，去掉空格
+            if (isChinese(StrInput)) {
+                StrInput = formatStr(StrInput, "");
+                StrInput = replaceSpace(StrInput, "");
+            } else { //英文，不去空格，回车转空格
+                StrInput = formatStr(StrInput, " ");
+            }
+            //都要转半角
+            StrInput = ToCDB(StrInput);
+            $("#outputstr").val(StrInput);
+            $('#outputstr').trigger('autoresize');
+        }
+
+        // 替换回车
+        function formatStr(strInput, str) {
+            strInput = strInput.replace(/\n/ig, str);
+            return strInput;
+        }
+
+        // 替换空格
+        function replaceSpace(strInput, str) {
+            return strInput.replace(/[ ]/g, str);
+        }
+
+        $(function () {
+            $("#inputstr").keyup(function () {
+                StrReplace();
+            });
+            // 回车事件
+            $("#inputstr").keypress(function (e) {
+                if (e.which == 13) {
+                    doTranslate();
+                    return false;
+                }
+            });
+        });
+
+        function copyText(id) {
+            $("#" + id).select(); // 选中文本
+            document.execCommand("Copy"); // 执行浏览器复制命令
+        }
+
+        function getCopyType() {
+            if ($('#copy_type').attr("checked")) {
+                return 'trans'
+            }
+        }
+
+        function doTranslate() {
+            if ($("#inputstr").val() == "") {
+                return;
+            }
+            setLan();
+            $("#translate").val(tip);
+            $('#translate').trigger('autoresize');
+            // 判断复制的对象
+            copy = false;
+            if (getCopyType() == 'trans') {
+                copy = true;
+            } else {
+                copyText('outputstr');
+            }
+            baiduTrans(copy);
+        }
+
+        function baiduTrans(copy) {
+            // 调用百度翻译API
+            var appid = '20190519000299180';
+            var key = 'JJR47pfMUM_gPF9Ea5gZ';
+            var salt = (new Date).getTime();
+            var query = $("#outputstr").val();
+            // 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
+            var str1 = appid + query + salt + key;
+            var sign = MD5(str1);
+            $.ajax({
+                url: 'https://fanyi-api.baidu.com/api/trans/vip/translate',
+                type: 'post',
+                dataType: 'jsonp',
+                data: {
+                    q: query,
+                    appid: appid,
+                    salt: salt,
+                    from: from,
+                    to: to,
+                    sign: sign
+                },
+                success: function (data) {
+                    if (data == null || data.trans_result == null) {
+                        $("#translate").val('空');
+                        $("#translate").trigger('autoresize');
+                        return;
+                    }
+                    $("#translate").val(data.trans_result[0].dst);
+                    $("#translate").trigger('autoresize');
+                    if (copy) {
+                        copyText('translate');
+                    }
+                },
+                error: function (data) {
+                    $("#translate").val(data);
+                    $("#translate").trigger('autoresize');
+                    console.log(data);
+                }
+            });
+        }
+
+    </script>
+</body>
+
 </html>

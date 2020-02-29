@@ -26,7 +26,7 @@ function buildMenu() {
     }
 }
 
-function openWindow(){
+function openWindow() {
     buildMenu();
     openMain();
 }
@@ -34,14 +34,19 @@ function openWindow(){
 function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
-        mainWindow = new BrowserWindow({ width: 520, height: 770, minWidth: 520, minHeight: 770, resizable: false })
+        mainWindow = new BrowserWindow({
+            width: 520,
+            height: 840,
+            resizable: false,
+            title: '格式化&翻译',
+        })
         //首页
-        mainWindow.loadFile('format.html');
+        mainWindow.loadFile('index.html');
         //注册关闭事件
         mainWindow.on('closed', () => {
             mainWindow = null;
         })
-    } 
+    }
 }
 
 app.on('ready', function () {
@@ -53,7 +58,7 @@ app.on('activate', function () {
 })
 
 app.on('window-all-closed', () => {
-  app.quit()
+    app.quit()
 })
 
 // 关闭所有窗口后退出程序

@@ -1,6 +1,6 @@
 {
   "name": "formater",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "format & translate chinese/english",
   "main": "main.js",
   "scripts": {
@@ -26,7 +26,7 @@
   "author": "liuhan",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^4.0.0",
+    "electron": "^8.0.2",
     "electron-builder": "^21.2.0"
   }
 }
