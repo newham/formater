@@ -22,7 +22,7 @@
 
         textarea {
             overflow-y: scroll !important;
-            border:0;
+            border: 0;
             border-left: 4px solid #eee;
             border-right: 0;
             border-bottom: 0;
@@ -58,7 +58,7 @@
     <!-- <div class="container"> -->
     <div class="row" style="margin-bottom: 0;">
         <div class="col s12 center-align">
-            <a onclick="format()" class="btn btn-large waves-effect waves-light green z-depth-3">
+            <a onclick="format()" class="btn-floating btn-large waves-effect waves-light green z-depth-3">
                 <i class="material-icons">translate</i>
             </a>
         </div>
@@ -105,7 +105,8 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 right-align green" style="padding-right: 5px;color: white;"><span id="words_count">0</span> 字
+        <div class="col s12 right-align green" style="padding-right: 5px;color: white;"><span id="words_count">0</span>
+            字
         </div>
     </div>
     <!-- </div> -->
@@ -118,6 +119,7 @@
             $("#inputstr").val("");
             $("#outputstr").val("");
             $("#translate").val("");
+            count();
         }
 
         function paste() {
@@ -236,6 +238,11 @@
             baiduTrans(copy);
         }
 
+        function count() {
+            //统计字数
+            $("#words_count").text($("#inputstr").val().length + '/' + $("#outputstr").val().length + '/' + $("#translate").val().length);
+        }
+
         function baiduTrans(copy) {
             // 调用百度翻译API
             var appid = '20190519000299180';
@@ -266,8 +273,7 @@
                     if (copy) {
                         copyText('translate');
                     }
-                    //统计字数
-                    $("#words_count").text($("#inputstr").val().length + '/' + $("#outputstr").val().length + '/' + $("#translate").val().length)
+                    count();
                 },
                 error: function (data) {
                     $("#translate").val(data);
