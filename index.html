@@ -58,11 +58,11 @@
     <!-- <div class="container"> -->
     <div class="row" style="margin-bottom: 0;">
         <div class="col s12 center-align">
-            <a onclick="format()" class="btn-floating btn-large waves-effect waves-light green z-depth-3">
+            <a onclick="format()" class="btn btn-large waves-effect waves-light green z-depth-3">
                 <i class="material-icons">translate</i>
             </a>
         </div>
-        <div class="col s12" style="margin-top: -28px;">
+        <div class="col s12" style="margin-top: -27px;">
             <div class="card ">
                 <div class="right-align" style="padding: 10px;border-bottom: 1px solid #eeeeee;">
                     <div class="switch">
@@ -86,7 +86,7 @@
         <div class="col s12">
             <div class="card ">
                 <div class="card-content">
-                    <textarea placeholder=" 格式化" id="outputstr"></textarea>
+                    <textarea placeholder=" 格式化" id="outputstr" class="grey lighten-5" disabled></textarea>
                 </div>
                 <div class="card-action right-align">
                     <a href="#" onclick="copyText('outputstr')">复制</a>
@@ -97,7 +97,7 @@
             <div class="card ">
                 <div class="card-content">
 
-                    <textarea placeholder=" Baidu翻译" id="translate"></textarea>
+                    <textarea placeholder=" Baidu翻译" id="translate" class="grey lighten-5" disabled></textarea>
 
                 </div>
                 <div class="card-action right-align">
@@ -105,7 +105,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 right-align green" style="padding-right: 5px;color: white;"><span id="words_count"></span>字
+        <div class="col s12 right-align green" style="padding-right: 5px;color: white;"><span id="words_count">0</span> 字
         </div>
     </div>
     <!-- </div> -->
@@ -275,7 +275,7 @@
                 }
             });
         }
-
+        $("#inputstr").select(); // 选中输入
     </script>
 </body>
 

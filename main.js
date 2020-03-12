@@ -17,6 +17,9 @@ function buildMenu() {
                 submenu: [
                     { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
                     { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+                    { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+                    { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+                    { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
                 ]
             }
         ];
@@ -35,6 +38,7 @@ function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
+            icon: "icon.ico",
             width: 520,
             height: 716,
             resizable: false,
