@@ -39,9 +39,11 @@ function openMain() {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
             icon: "icon.ico",
-            width: 520,
+            width: 620,
+            minWidth: 420,
             height: 716,
-            resizable: false,
+            minHeight:516,
+            resizable: true,
             title: '格式化&翻译',
         })
         //首页

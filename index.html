@@ -16,24 +16,25 @@
     <style type="text/css">
         body {
             margin: 0;
-            padding-top: 5px;
+            /* padding-top: 5px; */
             overflow-y: hidden;
         }
 
         textarea {
-            overflow-y: scroll !important;
+            overflow-y: scroll;
             border: 0;
-            border-left: 4px solid #eee;
+            border-top: 4px solid #eee;
             border-right: 0;
             border-bottom: 0;
             resize: none;
-            height: 159px;
             outline: none;
-            padding: 3px;
+            /* padding: 10px; */
+            font-size: 16;
+            height: 100%;
         }
 
         textarea:focus {
-            border-left: 4px solid #4caf50;
+            border-top: 4px solid #4caf50;
         }
 
         .card .card-content {
@@ -51,238 +52,65 @@
         .row .col {
             padding: 0px;
         }
+
+        .row {
+            margin: 0;
+        }
+
+        .tool {
+            padding: 10px 10px 8px 10px
+        }
     </style>
 </head>
+<!-- class="grey lighten-3 " -->
 
-<body class="grey lighten-4">
-    <!-- <div class="container"> -->
-    <div class="row" style="margin-bottom: 0;">
-        <div class="col s12 center-align">
-            <a onclick="format()" class="btn-floating btn-large waves-effect waves-light green z-depth-3">
-                <i class="material-icons">translate</i>
-            </a>
-        </div>
-        <div class="col s12" style="margin-top: -27px;">
+<body class="grey lighten-3">
+    <div class="fixed-action-btn white" style="bottom: 0px; left: 0px;padding: 15px;width: 49%;">
+        <label class="switch">
+            字数 <span id="words_count" style="margin-right: 10px;">0</span>
+            <label>
+                原文
+                <input type="checkbox" id="copy_type">
+                <span class="lever"></span>
+                译文
+            </label>
+        </label>
+    </div>
+
+    <div class="fixed-action-btn" style="bottom: 20px; right: 20px;">
+        <a class="btn-floating btn-large green z-depth-4" onclick="format()">
+            <i class="material-icons">translate</i>
+        </a>
+        <ul>
+            <li><a class="btn-floating red"
+                    style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"
+                    onclick="clean()"><i class="material-icons">replay</i></a></li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col s6" style="height: 100%;">
             <div class="card ">
-                <div class="right-align" style="padding: 10px;border-bottom: 1px solid #eeeeee;">
-                    <div class="switch">
-                        <label>
-                            格式化
-                            <input type="checkbox" id="copy_type">
-                            <span class="lever"></span>
-                            翻译
-                        </label>
-                    </div>
-                </div>
                 <div class="card-content">
                     <textarea placeholder=" 输入" id="inputstr"></textarea>
                 </div>
-                <div class="card-action right-align">
-                    <a href="#" onclick="clean()">清除</a>
-                    <a href="#" onclick="doTranslate()">翻译</a>
-                </div>
             </div>
         </div>
-        <div class="col s12">
+        <div class="col s6" style="height: 100%;">
             <div class="card ">
                 <div class="card-content">
-                    <textarea placeholder=" 格式化" id="outputstr" class="grey lighten-5"></textarea>
-                </div>
-                <div class="card-action right-align">
-                    <a href="#" onclick="copyText('outputstr')">复制</a>
-                </div>
-            </div>
-        </div>
-        <div class="col s12">
-            <div class="card ">
-                <div class="card-content">
-
                     <textarea placeholder=" Baidu翻译" id="translate" class="grey lighten-5"></textarea>
-
-                </div>
-                <div class="card-action right-align">
-                    <a href="#" onclick="copyText('translate')">复制</a>
                 </div>
             </div>
-        </div>
-        <div class="col s12 right-align green" style="padding-right: 5px;color: white;"><span id="words_count">0</span>
-            字
         </div>
     </div>
+    <div class="col s12 right-align green" style="padding-right: 5px;color: white;">
+        字
+    </div>
+
     <!-- </div> -->
 
-    <script>
-        var from = 'en';
-        var to = 'zh';
-        var tip = "正在翻译..."
-        function clean() {
-            $("#inputstr").val("");
-            $("#outputstr").val("");
-            $("#translate").val("");
-            count();
-        }
-
-        function paste() {
-            $("#inputstr").select(); // 选中文本
-            document.execCommand("Paste"); // 执行浏览器复制命令
-            StrReplace();
-        }
-
-        function format() {
-            clean();
-            paste();
-            doTranslate();
-        }
-
-        function isChinese(str) {
-            var pattern = new RegExp("[\u4E00-\u9FA5]+");
-            if (pattern.test(str)) {
-                return true;
-            }
-            return false;
-        }
-        // 全角转半角
-        function ToCDB(str) {
-            var tmp = "";
-            for (var i = 0; i < str.length; i++) {
-                if (str.charCodeAt(i) == 12288) {
-                    tmp += String.fromCharCode(str.charCodeAt(i) - 12256);
-                    continue;
-                }
-                if (str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375) {
-                    tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
-                }
-                else {
-                    tmp += String.fromCharCode(str.charCodeAt(i));
-                }
-            }
-            return tmp
-        }
-
-        function setLan() {
-            if (isChinese($("#inputstr").val())) {//中文
-                from = 'zh';
-                to = 'en';
-                tip = 'translating...';
-            } else { //英文，不去空格，回车转空格{
-                from = 'en';
-                to = 'zh';
-                tip = '正在找【百度】翻译...';
-            }
-        }
-
-        function StrReplace() {
-            // 设置语言
-            setLan();
-            var StrInput = $("#inputstr").val();
-            // 中文，去掉空格
-            if (isChinese(StrInput)) {
-                StrInput = formatStr(StrInput, "");
-                StrInput = replaceSpace(StrInput, "");
-            } else { //英文，不去空格，回车转空格
-                StrInput = formatStr(StrInput, " ");
-            }
-            //都要转半角
-            StrInput = ToCDB(StrInput);
-            $("#outputstr").val(StrInput);
-        }
-
-        // 替换回车
-        function formatStr(strInput, str) {
-            strInput = strInput.replace(/\n/ig, str);
-            return strInput;
-        }
-
-        // 替换空格
-        function replaceSpace(strInput, str) {
-            return strInput.replace(/[ ]/g, str);
-        }
-
-        $(function () {
-            $("#inputstr").keyup(function () {
-                StrReplace();
-            });
-            // 回车事件
-            $("#inputstr").keypress(function (e) {
-                if (e.which == 13) {
-                    doTranslate();
-                    return false;
-                }
-            });
-        });
-
-        function copyText(id) {
-            $("#" + id).select(); // 选中文本
-            document.execCommand("Copy"); // 执行浏览器复制命令
-        }
-
-        function getCopyType() {
-            if ($('#copy_type').attr("checked")) {
-                return 'trans'
-            }
-        }
-
-        function doTranslate() {
-            if ($("#inputstr").val() == "") {
-                return;
-            }
-            setLan();
-            $("#translate").val(tip);
-            // 判断复制的对象
-            copy = false;
-            if (getCopyType() == 'trans') {
-                copy = true;
-            } else {
-                copyText('outputstr');
-            }
-            baiduTrans(copy);
-        }
-
-        function count() {
-            //统计字数
-            $("#words_count").text($("#inputstr").val().length + '/' + $("#outputstr").val().length + '/' + $("#translate").val().length);
-        }
-
-        function baiduTrans(copy) {
-            // 调用百度翻译API
-            var appid = '20190519000299180';
-            var key = 'JJR47pfMUM_gPF9Ea5gZ';
-            var salt = (new Date).getTime();
-            var query = $("#outputstr").val();
-            // 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
-            var str1 = appid + query + salt + key;
-            var sign = MD5(str1);
-            $.ajax({
-                url: 'https://fanyi-api.baidu.com/api/trans/vip/translate',
-                type: 'post',
-                dataType: 'jsonp',
-                data: {
-                    q: query,
-                    appid: appid,
-                    salt: salt,
-                    from: from,
-                    to: to,
-                    sign: sign
-                },
-                success: function (data) {
-                    if (data == null || data.trans_result == null) {
-                        $("#translate").val('空');
-                        return;
-                    }
-                    $("#translate").val(data.trans_result[0].dst);
-                    if (copy) {
-                        copyText('translate');
-                    }
-                    count();
-                },
-                error: function (data) {
-                    $("#translate").val(data);
-                    console.log(data);
-                }
-            });
-        }
-        $("#inputstr").select(); // 选中输入
-    </script>
+    <script src="index.js"></script>
 </body>
 
 </html>
