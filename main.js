@@ -38,11 +38,12 @@ function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
+            titleBarStyle: 'hidden',
             icon: "icon.ico",
-            width: 620,
-            minWidth: 420,
-            height: 716,
-            minHeight:516,
+            width: 600,
+            minWidth: 500,
+            height: 700,
+            minHeight:500,
             resizable: true,
             title: '格式化&翻译',
         })

@@ -72,6 +72,8 @@ function StrReplace() {
     StrInput = ToCDB(StrInput);
     // $("#outputstr").val(StrInput);
     $("#inputstr").val(StrInput);
+    //重绘textarea区域
+    // do_resize();
 }
 
 // 替换回车
@@ -175,10 +177,12 @@ function baiduTrans(copy) {
 $("#inputstr").select(); // 选中输入
 
 // function do_resize() {
-//     re_size = ($(window).height() - 140) / 2;
-//     $("#translate").height(re_size);
-//     $("#inputstr").height(re_size);
+//     // alert($(document.body).height() + "," + $(window).height());
+//     h = $(window).height() - $("#title-bar").height();
+//     $("#translate").height(h);
+//     $("#inputstr").height(h);
 // }
 
 // $(window).resize(do_resize);
-// $(window).load(do_resize);
+
+// do_resize();

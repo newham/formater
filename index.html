@@ -21,9 +21,10 @@
         }
 
         textarea {
-            overflow-y: scroll;
+            /* padding-top: 23px; */
+            overflow-y: auto;
             border: 0;
-            border-top: 4px solid #eee;
+            border-top: 25px solid #fff;
             border-right: 0;
             border-bottom: 0;
             resize: none;
@@ -34,7 +35,7 @@
         }
 
         textarea:focus {
-            border-top: 4px solid #4caf50;
+            border-top: 25px solid #4caf50;
         }
 
         .card .card-content {
@@ -60,52 +61,66 @@
         .tool {
             padding: 10px 10px 8px 10px
         }
+
+        .title-bar {
+            top: 0;
+            left: 0;
+            background: #fff;
+            height: 22px;
+            -webkit-app-region: drag;
+            border-bottom: 1px solid #eee;
+            width: 100%;
+            padding: 3px;
+        }
     </style>
 </head>
 <!-- class="grey lighten-3 " -->
 
-<body class="grey lighten-3">
-    <div class="fixed-action-btn white" style="bottom: 0px; left: 0px;padding: 15px;width: 49%;">
-        <label class="switch">
-            字数 <span id="words_count" style="margin-right: 10px;">0</span>
-            <label>
-                原文
-                <input type="checkbox" id="copy_type">
-                <span class="lever"></span>
-                译文
-            </label>
-        </label>
+<body>
+    <div class="fixed-action-btn title-bar" id="title-bar">
+        <label id="words_count" class="right" style="margin-right: 6px;">0/0</label>
     </div>
+    <!-- <div class="fixed-action-btn white center"
+        style="bottom: 0px; left: 0px;padding: 12px;width: 100%;border-top: 1px solid #eee;">
+        <label >
+            
+            <a class="btn-flat" href="#" style="margin-right: 10px;">^原文</a>
+                
+               
+            <a class="btn-flat" href="#" style="margin-left: 10px;">译文^</a>    
+            
+        </label>
+    </div> -->
 
-    <div class="fixed-action-btn" style="bottom: 20px; right: 20px;">
-        <a class="btn-floating btn-large green z-depth-4" onclick="format()">
+    <div class="fixed-action-btn" style="bottom: 15px; right: 15px;">
+        <a class="btn-floating btn-large green z-depth-3" onclick="format()">
             <i class="material-icons">translate</i>
         </a>
         <ul>
             <li><a class="btn-floating red"
                     style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"
                     onclick="clean()"><i class="material-icons">replay</i></a></li>
+            <!-- <li><a class="btn-floating green"
+                    style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"
+                    onclick="copyText('translate')"><i class="material-icons">done</i></a></li> -->
         </ul>
     </div>
 
     <div class="row">
-        <div class="col s6" style="height: 100%;">
+        <div class="col s6">
             <div class="card ">
                 <div class="card-content">
                     <textarea placeholder=" 输入" id="inputstr"></textarea>
                 </div>
             </div>
         </div>
-        <div class="col s6" style="height: 100%;">
+        <div class="col s6">
             <div class="card ">
                 <div class="card-content">
                     <textarea placeholder=" Baidu翻译" id="translate" class="grey lighten-5"></textarea>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col s12 right-align green" style="padding-right: 5px;color: white;">
-        字
     </div>
 
     <!-- </div> -->
