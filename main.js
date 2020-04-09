@@ -40,10 +40,10 @@ function openMain() {
         mainWindow = new BrowserWindow({
             titleBarStyle: 'hidden',
             icon: "icon.ico",
-            width: 600,
+            width: 800,
             minWidth: 500,
-            height: 700,
-            minHeight:500,
+            height: 500,
+            minHeight:300,
             resizable: true,
             title: '格式化&翻译',
         })

@@ -3,7 +3,7 @@ var to = 'zh';
 var tip = "正在翻译..."
 function clean() {
     $("#inputstr").val("");
-    // $("#outputstr").val("");
+    $("#outputstr").val("");
     $("#translate").val("");
     count();
 }
@@ -70,8 +70,8 @@ function StrReplace() {
     }
     //都要转半角
     StrInput = ToCDB(StrInput);
-    // $("#outputstr").val(StrInput);
-    $("#inputstr").val(StrInput);
+    $("#outputstr").val(StrInput);
+    // $("#inputstr").val(StrInput);
     //重绘textarea区域
     // do_resize();
 }
@@ -106,8 +106,11 @@ function copyText(id) {
 }
 
 function getCopyType() {
-    if ($('#copy_type').attr("checked")) {
-        return 'trans'
+    // if ($('#copy_type').attr("checked")) {
+    //     return 'trans'
+    // }
+    if(copy_type){
+        return 'trans';
     }
 }
 
@@ -122,8 +125,8 @@ function doTranslate() {
     if (getCopyType() == 'trans') {
         copy = true;
     } else {
-        // copyText('outputstr');
-        copyText('inputstr');
+        copyText('outputstr');
+        // copyText('inputstr');
     }
     baiduTrans(copy);
 }
@@ -131,7 +134,7 @@ function doTranslate() {
 function count() {
     //统计字数
     $("#words_count").text($("#inputstr").val().length + '/' +
-        // $("#outputstr").val().length + '/'+
+        $("#outputstr").val().length + '/'+
         $("#translate").val().length);
 }
 
@@ -140,8 +143,8 @@ function baiduTrans(copy) {
     var appid = '20190519000299180';
     var key = 'JJR47pfMUM_gPF9Ea5gZ';
     var salt = (new Date).getTime();
-    // var query = $("#outputstr").val();
-    var query = $("#inputstr").val();
+    var query = $("#outputstr").val();
+    // var query = $("#inputstr").val();
     // 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
     var str1 = appid + query + salt + key;
     var sign = MD5(str1);
@@ -186,3 +189,18 @@ $("#inputstr").select(); // 选中输入
 // $(window).resize(do_resize);
 
 // do_resize();
+
+var copy_type = true;
+
+function changeTrans(){
+    copy_type = !copy_type;
+    if(copy_type){
+        $("#trans_switch").removeClass('light-blue');
+        $("#trans_switch").addClass('amber');
+        $("#trans_switch").text("原");
+    }else{
+        $("#trans_switch").removeClass('amber');
+        $("#trans_switch").addClass('light-blue');
+        $("#trans_switch").text("译");
+    }
+}
