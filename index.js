@@ -109,7 +109,7 @@ function getCopyType() {
     // if ($('#copy_type').attr("checked")) {
     //     return 'trans'
     // }
-    if(copy_type){
+    if (copy_type) {
         return 'trans';
     }
 }
@@ -133,9 +133,12 @@ function doTranslate() {
 
 function count() {
     //统计字数
-    $("#words_count").text($("#inputstr").val().length + '/' +
-        $("#outputstr").val().length + '/'+
-        $("#translate").val().length);
+    // $("#words_count").text($("#inputstr").val().length + '/' +
+    //     $("#outputstr").val().length + '/'+
+    //     $("#translate").val().length);
+    $('#input_count').text($("#inputstr").val().length)
+    $('#output_count').text($("#outputstr").val().length)
+    $('#translate_count').text($("#translate").val().length)
 }
 
 function baiduTrans(copy) {
@@ -192,15 +195,19 @@ $("#inputstr").select(); // 选中输入
 
 var copy_type = true;
 
-function changeTrans(){
-    copy_type = !copy_type;
-    if(copy_type){
-        $("#trans_switch").removeClass('light-blue');
-        $("#trans_switch").addClass('amber');
-        $("#trans_switch").text("原");
-    }else{
-        $("#trans_switch").removeClass('amber');
-        $("#trans_switch").addClass('light-blue');
-        $("#trans_switch").text("译");
+function changeTrans(isTrans) {
+    copy_type = isTrans
+    if (isTrans) {
+        // $("#trans_switch").removeClass('light-blue');
+        // $("#trans_switch").addClass('amber');
+        // $("#trans_switch").text("原");
+        $("#copy_out").removeClass('active');
+        $("#copy_trans").addClass('active');
+    } else {
+        // $("#trans_switch").removeClass('amber');
+        // $("#trans_switch").addClass('light-blue');
+        // $("#trans_switch").text("译");
+        $("#copy_trans").removeClass('active');
+        $("#copy_out").addClass('active');
     }
 }

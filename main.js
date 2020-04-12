@@ -40,12 +40,15 @@ function openMain() {
         mainWindow = new BrowserWindow({
             titleBarStyle: 'hidden',
             icon: "icon.ico",
-            width: 800,
-            minWidth: 500,
-            height: 500,
-            minHeight:300,
+            width: 900,
+            minWidth: 700,
+            height: 600,
+            minHeight: 500,
             resizable: true,
             title: '格式化&翻译',
+            webPreferences: {
+                nodeIntegration: true, // 是否集成Nodejs
+            }
         })
         //首页
         mainWindow.loadFile('index.html');
@@ -53,6 +56,8 @@ function openMain() {
         mainWindow.on('closed', () => {
             mainWindow = null;
         })
+        // 调试
+        // mainWindow.webContents.openDevTools()
     }
 }
 

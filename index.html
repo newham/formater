@@ -14,6 +14,14 @@
     <!-- md5 -->
     <script src="asserts/js/md5.js"></script>
     <style type="text/css">
+        :root {
+            --foot-bar-h: 35px;
+            --foot-i-padding: 4px;
+            --title-bar-h: 22px;
+            --foot-bar-padding: 15px;
+            --main-color: #4caf50;
+        }
+
         body {
             margin: 0;
             /* padding-top: 5px; */
@@ -28,12 +36,12 @@
             outline: none;
             /* padding: 10px; */
             font-size: 16;
-            height: calc(100% - 22px);
+            height: calc(100% - var(--title-bar-h) - var(--foot-bar-h));
             padding: 5px 10px 5px 10px;
         }
 
         textarea:focus {
-            border-top: 4px solid #4caf50;
+            border-top: 2px solid var(--main-color);
         }
 
         .card .card-content {
@@ -62,76 +70,115 @@
 
         .title-bar {
             background: #eee;
-            height: 22px;
+            height: var(--title-bar-h);
+            line-height: var(--title-bar-h);
+            text-align: center;
             -webkit-app-region: drag;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #ddd;
             width: 100%;
-            padding: 3px;
+            user-select: none;
         }
-        .words-count::before{
+
+        .btn-title {
+            height: 100%;
+            color: #fff;
+            padding: 0 5px;
+        }
+
+        .words-count::before {
             content: "字数 ";
         }
+
+        .foot-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--foot-bar-h);
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .foot-bar div {
+            /* text-align: right; */
+            height: var(--foot-bar-h);
+            line-height: var(--foot-bar-h);
+            padding-left: var(--foot-bar-padding) !important;
+            padding-right: var(--foot-bar-padding) !important;
+            /* border-right: 1px solid #ddd; */
+        }
+
+        .foot-bar a {
+            /* color: var(--main-color) !important; */
+            color: #aaa;
+            margin-right: 10px;
+        }
+
+        .foot-bar a:hover {
+            color: var(--main-color);
+        }
+
+        .foot-bar i {
+            margin: 0;
+            padding-top: var(--foot-i-padding);
+        }
+
+        .btn-action {
+            right: 15;
+            bottom: 50;
+        }
+
+        .active {
+            color: var(--main-color) !important;
+        }
     </style>
+    <script src="index.js"></script>
+    <script src="remote.js"></script>
 </head>
 <!-- class="grey lighten-3 " -->
 
 <body>
     <div class="title-bar center" id="title-bar">
-        <label id="words_count" class="right words-count" style="margin-right: 6px;">0/0/0</label>
+        <label ondblclick="maxWindow()">格式化&翻译&拷贝</label>
     </div>
-    <!-- <div class="fixed-action-btn white center"
-        style="bottom: 0px; left: 0px;padding: 12px;width: 100%;border-top: 1px solid #eee;">
-        <label >
-            
-            <a class="btn-flat" href="#" style="margin-right: 10px;">^原文</a>
-                
-               
-            <a class="btn-flat" href="#" style="margin-left: 10px;">译文^</a>    
-            
-        </label>
-    </div> -->
 
-    <div class="fixed-action-btn" style="bottom: 15px; right: 15px;height: calc(100%-22px);">
+    <div class="fixed-action-btn btn-action">
         <a class="btn-floating btn-large green z-depth-3" onclick="format()">
             <i class="material-icons">translate</i>
         </a>
-        <ul>
-            <li><a class="btn-floating red"
-                    style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"
-                    onclick="clean()"><i class="material-icons">replay</i></a></li>
-            <li><a id="trans_switch" class="btn-floating amber"
-                    style="transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px); opacity: 0;"
-                    onclick="changeTrans()">原</a></li>
-        </ul>
     </div>
 
     <div class="row">
         <div class="col s4">
-            <div class="card ">
-                <div class="card-content">
-                    <textarea placeholder="输入" id="inputstr"></textarea>
-                </div>
-            </div>
+            <textarea placeholder="粘贴&回车翻译" class="grey lighten-5" id="inputstr"></textarea>
         </div>
         <div class="col s4">
-            <div class="card ">
-                <div class="card-content">
-                    <textarea placeholder="格式化" id="outputstr" class="grey lighten-4" readonly></textarea>
-                </div>
-            </div>
+            <textarea placeholder="格式化" id="outputstr" class="grey lighten-4" readonly></textarea>
         </div>
         <div class="col s4">
-            <div class="card ">
-                <div class="card-content">
-                    <textarea placeholder="Baidu翻译" id="translate" class="grey lighten-3" readonly></textarea>
-                </div>
-            </div>
+            <textarea placeholder="Baidu翻译" id="translate" class="grey lighten-3" readonly></textarea>
+        </div>
+    </div>
+    <div class="row foot-bar">
+        <div class="col s4 grey lighten-5">
+            <label id="input_count" class="right">0</label>
+            <a href="#" onclick="copyText('inputstr')"><i class="material-icons">done</i></a>
+            <a href="#" onclick="clean()"><i class="material-icons">replay</i></a>
+        </div>
+        <div class="col s4 grey lighten-4">
+            <label id="output_count" class="right">0</label>
+            <a href="#" onclick="copyText('outputstr')"><i class="material-icons">done</i></a>
+            <a href="#" id="copy_out" onclick="changeTrans(false)"><i class="material-icons">my_location</i></a>
+        </div>
+        <div class="col s4 grey lighten-3">
+            <label id="translate_count" class="right">0</label>
+            <a href="#" onclick="copyText('translate')"><i class="material-icons">done</i></a>
+            <a href="#" id="copy_trans" class="active" onclick="changeTrans(true)"><i class="material-icons">my_location</i></a>
         </div>
     </div>
 
     <!-- </div> -->
 
-    <script src="index.js"></script>
+
 </body>
 
 </html>
