@@ -65,6 +65,7 @@ function StrReplace() {
     if (isChinese(StrInput)) {
         StrInput = formatStr(StrInput, "");
         StrInput = replaceSpace(StrInput, "");
+        StrInput = replaceComma(StrInput,"，")
     } else { //英文，不去空格，回车转空格
         StrInput = formatStr(StrInput, " ");
     }
@@ -85,6 +86,11 @@ function formatStr(strInput, str) {
 // 替换空格
 function replaceSpace(strInput, str) {
     return strInput.replace(/[ ]/g, str);
+}
+
+// 替换空格
+function replaceComma(strInput, str) {
+    return strInput.replace(/,/ig, str);
 }
 
 $(function () {

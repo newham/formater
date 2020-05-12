@@ -36,12 +36,17 @@
             outline: none;
             /* padding: 10px; */
             font-size: 16;
-            height: calc(100% - var(--title-bar-h) - var(--foot-bar-h));
+            height: calc(50% - var(--title-bar-h) / 2 - var(--foot-bar-h) / 2);
             padding: 5px 10px 5px 10px;
+            border-left:3px solid #eee;
+        }
+
+        .full-h{
+            height: calc(100% - var(--title-bar-h) - var(--foot-bar-h));
         }
 
         textarea:focus {
-            border-top: 2px solid var(--main-color);
+            border-left: 3px solid var(--main-color);
         }
 
         .card .card-content {
@@ -148,28 +153,27 @@
     </div>
 
     <div class="row">
-        <div class="col s4">
-            <textarea placeholder="粘贴&回车翻译" class="grey lighten-5" id="inputstr"></textarea>
-        </div>
-        <div class="col s4">
+        <div class="col s6">
+            <textarea placeholder="粘贴&回车翻译" class="grey lighten-5" id="inputstr" style="border-bottom: 1px solid #dfdfdf;"></textarea>
             <textarea placeholder="格式化" id="outputstr" class="grey lighten-4" readonly></textarea>
         </div>
-        <div class="col s4">
-            <textarea placeholder="Baidu翻译" id="translate" class="grey lighten-3" readonly></textarea>
+        <div class="col s6">
+            <textarea placeholder="Baidu翻译" id="translate" class="grey lighten-3 full-h" readonly></textarea>
         </div>
     </div>
     <div class="row foot-bar">
-        <div class="col s4 grey lighten-5">
+        <!-- <div class="col s4 grey lighten-5">
             <label id="input_count" class="right">0</label>
             <a href="#" onclick="copyText('inputstr')"><i class="material-icons">done</i></a>
             <a href="#" onclick="clean()"><i class="material-icons">replay</i></a>
-        </div>
-        <div class="col s4 grey lighten-4">
+        </div> -->
+        <div class="col s6 grey lighten-4">
             <label id="output_count" class="right">0</label>
+            <a href="#" onclick="clean()"><i class="material-icons">replay</i></a>
             <a href="#" onclick="copyText('outputstr')"><i class="material-icons">done</i></a>
             <a href="#" id="copy_out" onclick="changeTrans(false)"><i class="material-icons">my_location</i></a>
         </div>
-        <div class="col s4 grey lighten-3">
+        <div class="col s6 grey lighten-3">
             <label id="translate_count" class="right">0</label>
             <a href="#" onclick="copyText('translate')"><i class="material-icons">done</i></a>
             <a href="#" id="copy_trans" class="active" onclick="changeTrans(true)"><i class="material-icons">my_location</i></a>
@@ -177,7 +181,6 @@
     </div>
 
     <!-- </div> -->
-
 
 </body>
 
