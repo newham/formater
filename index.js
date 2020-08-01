@@ -1,6 +1,7 @@
 var from = 'en';
 var to = 'zh';
 var tip = "正在翻译..."
+
 function clean() {
     $("#inputstr").val("");
     $("#outputstr").val("");
@@ -37,8 +38,7 @@ function ToCDB(str) {
         }
         if (str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375) {
             tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
-        }
-        else {
+        } else {
             tmp += String.fromCharCode(str.charCodeAt(i));
         }
     }
@@ -46,7 +46,7 @@ function ToCDB(str) {
 }
 
 function setLan() {
-    if (isChinese($("#inputstr").val())) {//中文
+    if (isChinese($("#inputstr").val())) { //中文
         from = 'zh';
         to = 'en';
         tip = 'translating...';
@@ -65,7 +65,7 @@ function StrReplace() {
     if (isChinese(StrInput)) {
         StrInput = formatStr(StrInput, "");
         StrInput = replaceSpace(StrInput, "");
-        StrInput = replaceComma(StrInput,"，")
+        StrInput = replaceComma(StrInput, "，")
     } else { //英文，不去空格，回车转空格
         StrInput = formatStr(StrInput, " ");
     }
@@ -75,6 +75,10 @@ function StrReplace() {
     // $("#inputstr").val(StrInput);
     //重绘textarea区域
     // do_resize();
+    if (is_paste) {
+        copyText('outputstr')
+        is_paste = false
+    }
 }
 
 // 替换回车
@@ -93,12 +97,12 @@ function replaceComma(strInput, str) {
     return strInput.replace(/,/ig, str);
 }
 
-$(function () {
-    $("#inputstr").keyup(function () {
+$(function() {
+    $("#inputstr").keyup(function() {
         StrReplace();
     });
     // 回车事件
-    $("#inputstr").keypress(function (e) {
+    $("#inputstr").keypress(function(e) {
         if (e.which == 13) {
             doTranslate();
             return false;
@@ -169,7 +173,7 @@ function baiduTrans(copy) {
             to: to,
             sign: sign
         },
-        success: function (data) {
+        success: function(data) {
             if (data == null || data.trans_result == null) {
                 $("#translate").val('空');
                 return;
@@ -180,12 +184,13 @@ function baiduTrans(copy) {
             }
             count();
         },
-        error: function (data) {
+        error: function(data) {
             $("#translate").val(data);
             console.log(data);
         }
     });
 }
+
 $("#inputstr").select(); // 选中输入
 
 // function do_resize() {
@@ -216,4 +221,16 @@ function changeTrans(isTrans) {
         $("#copy_trans").removeClass('active');
         $("#copy_out").addClass('active');
     }
+}
+
+var pre_key = 0
+var is_paste = false
+
+document.onkeydown = function(e) {
+    if (pre_key == 91 && e.keyCode == 86) {
+        console.log('paste')
+        is_paste = true
+    }
+    // console.log(e.keyCode)
+    pre_key = e.keyCode
 }

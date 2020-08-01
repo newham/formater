@@ -5,11 +5,10 @@ var mainWindow = null;
 
 function buildMenu() {
     if (process.platform === 'darwin') {
-        const template = [
-            {
+        const template = [{
                 label: "Application",
                 submenu: [
-                    { label: "Quit", accelerator: "Command+Q", click: function () { app.quit(); } }
+                    { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); } }
                 ]
             },
             {
@@ -38,34 +37,35 @@ function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
-            titleBarStyle: 'hidden',
-            icon: "icon.ico",
-            width: 900,
-            minWidth: 700,
-            height: 600,
-            minHeight: 500,
-            resizable: true,
-            title: '格式化&翻译',
-            webPreferences: {
-                nodeIntegration: true, // 是否集成Nodejs
-            }
-        })
-        //首页
+                titleBarStyle: 'hidden',
+                icon: "icon.ico",
+                width: 900,
+                minWidth: 700,
+                height: 600,
+                minHeight: 500,
+                resizable: true,
+                title: '格式化&翻译',
+                webPreferences: {
+                    nodeIntegration: true, // 是否集成Nodejs
+                }
+            })
+            //首页
         mainWindow.loadFile('index.html');
         //注册关闭事件
         mainWindow.on('closed', () => {
             mainWindow = null;
         })
+
         // 调试
         // mainWindow.webContents.openDevTools()
     }
 }
 
-app.on('ready', function () {
+app.on('ready', function() {
     openWindow();
 })
 
-app.on('activate', function () {
+app.on('activate', function() {
     openWindow();
 })
 

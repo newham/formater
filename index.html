@@ -14,20 +14,20 @@
     <!-- md5 -->
     <script src="asserts/js/md5.js"></script>
     <style type="text/css">
-        :root {
+         :root {
             --foot-bar-h: 35px;
             --foot-i-padding: 4px;
             --title-bar-h: 22px;
             --foot-bar-padding: 15px;
             --main-color: #4caf50;
         }
-
+        
         body {
             margin: 0;
             /* padding-top: 5px; */
             overflow-y: hidden;
         }
-
+        
         textarea {
             /* padding-top: 23px; */
             overflow-y: auto;
@@ -38,41 +38,41 @@
             font-size: 16;
             height: calc(50% - var(--title-bar-h) / 2 - var(--foot-bar-h) / 2);
             padding: 5px 10px 5px 10px;
-            border-left:3px solid #eee;
+            border-left: 3px solid #eee;
         }
-
-        .full-h{
+        
+        .full-h {
             height: calc(100% - var(--title-bar-h) - var(--foot-bar-h));
         }
-
+        
         textarea:focus {
             border-left: 3px solid var(--main-color);
         }
-
+        
         .card .card-content {
             padding: 0px;
         }
-
+        
         .card .card-action {
             padding: 10px !important;
         }
-
+        
         .card {
             margin: 0px;
         }
-
+        
         .row .col {
             padding: 0px;
         }
-
+        
         .row {
             margin: 0;
         }
-
+        
         .tool {
             padding: 10px 10px 8px 10px
         }
-
+        
         .title-bar {
             background: #eee;
             height: var(--title-bar-h);
@@ -83,17 +83,17 @@
             width: 100%;
             user-select: none;
         }
-
+        
         .btn-title {
             height: 100%;
             color: #fff;
             padding: 0 5px;
         }
-
+        
         .words-count::before {
             content: "字数 ";
         }
-
+        
         .foot-bar {
             position: fixed;
             bottom: 0;
@@ -102,7 +102,7 @@
             height: var(--foot-bar-h);
             border-top: 1px solid #e8e8e8;
         }
-
+        
         .foot-bar div {
             /* text-align: right; */
             height: var(--foot-bar-h);
@@ -111,33 +111,31 @@
             padding-right: var(--foot-bar-padding) !important;
             /* border-right: 1px solid #ddd; */
         }
-
+        
         .foot-bar a {
             /* color: var(--main-color) !important; */
             color: #aaa;
             margin-right: 10px;
         }
-
+        
         .foot-bar a:hover {
             color: var(--main-color);
         }
-
+        
         .foot-bar i {
             margin: 0;
             padding-top: var(--foot-i-padding);
         }
-
+        
         .btn-action {
             right: 15;
             bottom: 50;
         }
-
+        
         .active {
             color: var(--main-color) !important;
         }
     </style>
-    <script src="index.js"></script>
-    <script src="remote.js"></script>
 </head>
 <!-- class="grey lighten-3 " -->
 
@@ -182,6 +180,9 @@
 
     <!-- </div> -->
 
+    <!-- js -->
+    <script src="index.js"></script>
+    <script src="remote.js"></script>
 </body>
 
 </html>
