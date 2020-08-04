@@ -2,6 +2,7 @@ var electron = require('electron');
 const { app, Menu } = require('electron')
 var BrowserWindow = electron.BrowserWindow;
 var mainWindow = null;
+var os = require('os')
 
 function buildMenu() {
     if (process.platform === 'darwin') {
@@ -37,20 +38,26 @@ function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
-                titleBarStyle: 'hidden',
-                icon: "icon.ico",
-                width: 900,
-                minWidth: 700,
-                height: 600,
-                minHeight: 500,
-                resizable: true,
-                title: '格式化&翻译',
-                webPreferences: {
-                    nodeIntegration: true, // 是否集成Nodejs
-                }
-            })
-            //首页
-        mainWindow.loadFile('index.html');
+            titleBarStyle: 'hidden',
+            icon: "icon.ico",
+            width: 900,
+            minWidth: 700,
+            height: 600,
+            minHeight: 500,
+            resizable: true,
+            title: '格式化&翻译',
+            webPreferences: {
+                nodeIntegration: true, // 是否集成Nodejs
+            }
+        })
+
+        //首页
+        if (os.type() == 'Darwin') {
+            mainWindow.loadFile('index.html');
+        } else {
+            mainWindow.loadFile('index_win.html');
+        }
+
         //注册关闭事件
         mainWindow.on('closed', () => {
             mainWindow = null;

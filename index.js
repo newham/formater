@@ -223,14 +223,28 @@ function changeTrans(isTrans) {
     }
 }
 
-var pre_key = 0
 var is_paste = false
 
-document.onkeydown = function(e) {
-    if (pre_key == 91 && e.keyCode == 86) {
-        console.log('paste')
-        is_paste = true
-    }
-    // console.log(e.keyCode)
-    pre_key = e.keyCode
-}
+// 粘贴直接格式化功能，由双击功能取代
+// document.onkeydown = function(e) {
+//     if (pre_key == 91 && e.keyCode == 86) {
+//         console.log('paste')
+//         is_paste = true
+//     }
+//     // console.log(e.keyCode)
+//     pre_key = e.keyCode
+// }
+
+//双击直接粘贴并格式化
+$("#inputstr").dblclick(() => {
+    is_paste = true
+    paste()
+})
+
+$("#translate").dblclick(() => {
+    copyText('translate')
+})
+
+$("#outputstr").dblclick(() => {
+    copyText('outputstr')
+})

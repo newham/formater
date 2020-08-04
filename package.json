@@ -1,35 +1,35 @@
 {
-  "name": "formater",
-  "version": "3.2.0",
-  "description": "format & translate chinese/english",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build_mac": "electron-builder build --mac --x64",
-    "build_linux": "electron-builder build --linux deb --x64",
-    "build_win": "electron-builder build --win --x64"
-  },
-  "build": {
-    "productName": "formater",
-    "appId": "cn.liuhan.formater",
-    "electronDownload": {
-      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    "name": "formater",
+    "version": "3.3.0",
+    "description": "format & translate chinese/english",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build_mac": "electron-builder build --mac --x64",
+        "build_linux": "electron-builder build --linux deb --x64",
+        "build_win": "electron-builder build --win --x64"
     },
-    "directories": {
-      "output": "out"
+    "build": {
+        "productName": "formater",
+        "appId": "cn.liuhan.formater",
+        "electronDownload": {
+            "mirror": "https://npm.taobao.org/mirrors/electron/"
+        },
+        "directories": {
+            "output": "out"
+        },
+        "mac": {
+            "icon": "./icon.icns"
+        },
+        "win": {
+            "icon": "./icon.ico"
+        }
     },
-    "mac": {
-      "icon": "./icon.icns"
-    },
-    "win": {
-      "icon": "./icon.ico"
+    "author": "liuhan",
+    "license": "ISC",
+    "devDependencies": {
+        "electron": "^8.2.0",
+        "electron-builder": "^22.4.1"
     }
-  },
-  "author": "liuhan",
-  "license": "ISC",
-  "devDependencies": {
-    "electron": "^8.2.0",
-    "electron-builder": "^22.4.1"
-  }
 }
