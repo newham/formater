@@ -86,7 +86,7 @@ function openMain() {
             mainWindow = null;
         })
 
-        // mainWindow.webContents.openDevTools() // 调试
+        mainWindow.webContents.openDevTools() // 调试
     }
 }
 

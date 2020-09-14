@@ -17,6 +17,7 @@
             --bg-hover-color: #e1e1e1;
             --font-color: #fff;
             --border-color: #e8e8e8;
+            --border-radius: 6px;
             --border-h: 1px;
         }
         
@@ -37,7 +38,7 @@
             resize: none;
             outline: none;
             /* padding: 10px; */
-            /* font-size: 13; */
+            font-size: 15;
             padding: 6px 10px 5px 10px;
             border-top: 3px solid #fff;
         }
@@ -149,7 +150,7 @@
         
         .span-btn {
             /* color: var(--font-color); */
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             padding: 2px 4px;
             font-weight: bold;
         }
@@ -173,12 +174,15 @@
         }
         
         .title-bar i {
-            padding-top: 7px;
+            border-radius: var(--border-radius);
+            padding: 3px;
+            margin-top: 4px;
             color: #777;
         }
         
         .title-bar i:hover {
             color: var(--main-color);
+            background: var(--bg-hover-color);
         }
         
         .title-bar i:active {
@@ -198,7 +202,9 @@
     </div>
     <div class="tool-bar" style="left: 0px;padding-left: 78px;">
         <label class="btn-switch-trans left">
-            <span onclick="clean()" class="span-btn span-btn-danger">清空</span>&nbsp;
+            <span onclick="clean()" class="span-btn span-btn-danger">清空↻</span>&nbsp;
+            <span onclick="enlargeFont(1)" class="span-btn">字号＋</span>&nbsp;
+            <span onclick="enlargeFont(-1)" class="span-btn">字号－</span>&nbsp;
         </label>
     </div>
     <div class="tool-bar" style="right: 0px;">

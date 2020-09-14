@@ -316,3 +316,13 @@ $("#translate").bind("contextmenu", function() {
     copyText('translate')
     return false;
 })
+
+function enlargeFont(increase) {
+    var old_size = parseInt($("#inputstr").css("font-size"))
+    var new_size = old_size + increase
+    if (new_size <= 10 || new_size >= 20) { //限制最大、最小字号
+        return
+    }
+    $("#inputstr").css("font-size", new_size)
+    $("#translate").css("font-size", new_size)
+}
