@@ -4,22 +4,32 @@ var BrowserWindow = electron.BrowserWindow;
 var mainWindow = null;
 var os = require('os')
 
+// app.disableHardwareAcceleration(); //debug: AVDCreateGPUAccelerator: Error loading GPU renderer
+
 function buildMenu() {
-    if (process.platform === 'darwin') {
+    if (isMacOS()) {
         const template = [{
-                label: "Application",
+                label: "Formater",
                 submenu: [
-                    { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); } }
+                    { label: "退出", accelerator: "Command+Q", click: function() { app.quit(); } },
+                    { type: 'separator' },
+                    {
+                        label: '关于',
+                        click: function() {
+                            app.showAboutPanel()
+                        }
+                    },
+
                 ]
             },
             {
-                label: "Edit",
+                label: "编辑",
                 submenu: [
-                    { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-                    { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-                    { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
-                    { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
-                    { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
+                    { label: "复制", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+                    { label: "粘贴", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+                    { label: '下一步', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+                    { label: '上一步', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+                    { label: "全选", accelerator: "CmdOrCtrl+A", selector: "selectAll:" },
                 ]
             }
         ];
@@ -27,6 +37,18 @@ function buildMenu() {
     } else {
         Menu.setApplicationMenu(null)
     }
+}
+
+function isMacOS() {
+    return os.type() === 'Darwin'
+}
+
+function isWin() {
+    return os.type() === 'Windows_NT'
+}
+
+function isLinux() {
+    return os.type() === 'Linux'
 }
 
 function openWindow() {
@@ -38,12 +60,13 @@ function openMain() {
     if (mainWindow == null) {
         //设置窗口大小等参数
         mainWindow = new BrowserWindow({
-            titleBarStyle: 'hidden',
+            // titleBarStyle: 'hidden',
+            titleBarStyle: "hiddenInset",
             icon: "icon.ico",
             width: 900,
-            minWidth: 700,
+            minWidth: 680,
             height: 600,
-            minHeight: 500,
+            minHeight: 380,
             resizable: true,
             title: '格式化&翻译',
             webPreferences: {
@@ -52,10 +75,10 @@ function openMain() {
         })
 
         //首页
-        if (os.type() == 'Darwin') {
-            mainWindow.loadFile('index.html');
-        } else {
+        if (isWin()) {
             mainWindow.loadFile('index_win.html');
+        } else {
+            mainWindow.loadFile('index.html');
         }
 
         //注册关闭事件
@@ -63,8 +86,7 @@ function openMain() {
             mainWindow = null;
         })
 
-        // 调试
-        // mainWindow.webContents.openDevTools()
+        // mainWindow.webContents.openDevTools() // 调试
     }
 }
 
