@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "electron . -t",
         "build_mac": "electron-builder build --mac --x64",
         "build_linux": "electron-builder build --linux AppImage --x64",
         "build_win": "electron-builder build --win --x64"

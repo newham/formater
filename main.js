@@ -86,7 +86,9 @@ function openMain() {
             mainWindow = null;
         })
 
-        mainWindow.webContents.openDevTools() // 调试
+        if (process.argv.includes('-t')) {
+            mainWindow.webContents.openDevTools() // 调试
+        }
     }
 }
 
