@@ -19,6 +19,10 @@ function paste() {
 }
 
 function format() {
+    // 检查剪切板是否有内容
+    if (clipboard.readText() == "") {
+        return
+    }
     clean();
     paste();
     if (copy_type) {
@@ -142,7 +146,7 @@ function getCopyType() {
 }
 
 function showTip(isShow) {
-    console.log("progress", isShow)
+    // console.log("progress", isShow)
     if (isShow) {
         $("#progress").show()
         $("#translate").val(tip);
