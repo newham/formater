@@ -64,9 +64,9 @@ function openMain() {
             titleBarStyle: "hiddenInset",
             icon: "icon.ico",
             width: 900,
-            minWidth: 680,
+            minWidth: 600,
             height: 600,
-            minHeight: 380,
+            minHeight: 300,
             resizable: true,
             title: '格式化&翻译',
             webPreferences: {

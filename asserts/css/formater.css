@@ -1,0 +1,196 @@
+:root {
+    --foot-bar-h: 0px;
+    --foot-i-padding: 4px;
+    --title-bar-h: 38px;
+    --foot-bar-padding: 15px;
+    --main-color: #4caf50;
+    --second-color: #367037;
+    --bg-color: #eee;
+    --bg-hover-color: #e1e1e1;
+    --font-color: #fff;
+    --border-color: #e8e8e8;
+    --border-radius: 6px;
+    --border-h: 1px;
+    --border-top-h: 3px;
+}
+
+.main-color {
+    color: var(--main-color);
+}
+
+body {
+    margin: 0;
+    /* padding-top: 5px; */
+    overflow-y: hidden;
+}
+
+textarea {
+    /* padding-top: 23px; */
+    overflow-y: auto;
+    border: 0;
+    resize: none;
+    outline: none;
+    /* padding: 10px; */
+    font-size: 15;
+    padding: 6px 10px 5px 10px;
+    border-top: var(--border-top-h) solid #fff;
+}
+
+
+/* textarea::-webkit-input-placeholder {
+    color: var(--second-color);
+} */
+
+textarea:focus {
+    border-top: var(--border-top-h) solid var(--main-color);
+    /* background: var(--border-color); */
+}
+
+.full-h {
+    height: calc(100% - var(--title-bar-h) - var(--foot-bar-h));
+}
+
+.card .card-content {
+    padding: 0px;
+}
+
+.card .card-action {
+    padding: 10px !important;
+}
+
+.card {
+    margin: 0px;
+}
+
+.row .col {
+    padding: 0px;
+}
+
+.row {
+    margin: 0;
+}
+
+.tool {
+    padding: 10px 10px 8px 10px
+}
+
+.title-bar {
+    background: var(--bg-color);
+    /* color: var(--font-color); */
+    height: var(--title-bar-h);
+    line-height: var(--title-bar-h);
+    text-align: center;
+    -webkit-app-region: drag;
+    border-bottom: var(--border-h) solid var(--border-color);
+    width: 100%;
+    user-select: none;
+}
+
+.btn-title {
+    height: 100%;
+    color: #fff;
+    padding: 0 5px;
+}
+
+.words-count::before {
+    content: "字数 ";
+}
+
+.foot-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--foot-bar-h);
+    /* border-top: 1px solid #e8e8e8; */
+}
+
+.foot-bar div {
+    /* text-align: right; */
+    height: var(--foot-bar-h);
+    line-height: var(--foot-bar-h);
+    padding-left: var(--foot-bar-padding) !important;
+    padding-right: var(--foot-bar-padding) !important;
+    /* border-right: 1px solid #ddd; */
+}
+
+.foot-bar a {
+    /* color: var(--main-color) !important; */
+    color: #aaa;
+    margin-right: 10px;
+}
+
+.foot-bar a:hover {
+    color: var(--main-color);
+}
+
+.foot-bar i {
+    margin: 0;
+    padding-top: var(--foot-i-padding);
+}
+
+.btn-action {
+    right: 15;
+    bottom: 15;
+}
+
+.active {
+    color: var(--main-color) !important;
+}
+
+.tool-bar {
+    position: fixed;
+    /*为了兼容字体高度*/
+    top: 1px;
+    height: var(--title-bar-h);
+    line-height: var(--title-bar-h);
+    padding-right: 10px;
+    text-align: right;
+    font-size: 12px;
+}
+
+.span-btn {
+    /* color: var(--font-color); */
+    border-radius: var(--border-radius);
+    /* 兼容字体 */
+    padding: 3px 4px 2px 4px;
+    /* font-weight: bold; */
+}
+
+.span-btn:hover {
+    color: var(--main-color);
+    background: var(--bg-hover-color);
+}
+
+.span-btn-danger:hover {
+    color: OrangeRed;
+}
+
+.span-btn:active {
+    color: #333;
+}
+
+.btn-switch-trans {
+    cursor: pointer !important;
+    user-select: none;
+}
+
+.title-bar i {
+    border-radius: var(--border-radius);
+    padding: 3px;
+    margin-top: 4px;
+    color: #777;
+}
+
+.title-bar i:hover {
+    color: var(--main-color);
+    background: var(--bg-hover-color);
+}
+
+.title-bar i:active {
+    color: #333;
+}
+
+.l-border {
+    border-left: var(--border-h) solid var(--border-color);
+}

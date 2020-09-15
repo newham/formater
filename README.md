@@ -1,4 +1,4 @@
-# formater
+# Formater
 
 ## build
 ```shell
@@ -13,4 +13,4 @@ exe see in out/
 
 ## cap
 
-<img src="cap.jpg">
+<img src="cap.png">

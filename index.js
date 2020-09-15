@@ -1,4 +1,5 @@
 const { clipboard } = require('electron')
+const { readConf, writeConf } = require('./conf')
 var from = 'en';
 var to = 'zh';
 var tip = "正在翻译..."
@@ -140,14 +141,24 @@ function getCopyType() {
     }
 }
 
+function showTip(isShow) {
+    console.log("progress", isShow)
+    if (isShow) {
+        $("#progress").show()
+        $("#translate").val(tip);
+    } else {
+        $("#progress").hide()
+    }
+}
+
 function doTranslate() {
     if ($("#inputstr").val() == "") {
         return;
     }
     setLan();
-    $("#translate").val(tip);
-    // 判断复制的对象
-    copy = false;
+    showTip(true)
+
+    copy = false; // 判断复制的对象
     if (getCopyType() == 'trans') {
         copy = true;
     } else {
@@ -228,16 +239,16 @@ function baiduTrans(copy) {
             if (copy) {
                 copyText('translate');
             }
-            count();
+            showTip(false)
+            count(); //显示统计字数
         },
         error: function(data) {
             $("#translate").val(data);
+            showTip(false)
             console.log(data);
         }
     });
 }
-
-$("#inputstr").select(); // 选中输入
 
 // function do_resize() {
 //     // alert($(document.body).height() + "," + $(window).height());
@@ -317,12 +328,35 @@ $("#translate").bind("contextmenu", function() {
     return false;
 })
 
+function setFontSize(font_size) {
+    $("#inputstr").css("font-size", font_size)
+    $("#translate").css("font-size", font_size)
+}
+
+var conf
+
 function enlargeFont(increase) {
     var old_size = parseInt($("#inputstr").css("font-size"))
     var new_size = old_size + increase
-    if (new_size <= 10 || new_size >= 20) { //限制最大、最小字号
+    if (new_size <= 10 || new_size >= 25) { //限制最大、最小字号
         return
     }
-    $("#inputstr").css("font-size", new_size)
-    $("#translate").css("font-size", new_size)
+    setFontSize(new_size) // 设置
+    setConf(new_size) //更新配置
+    writeConf(conf) // 写入配置文件
+}
+
+function setConf(font_size) {
+    conf['font-size'] = font_size
+}
+
+// 初始化
+window.onload = () => {
+    readConf((ok, data) => {
+        if (ok) {
+            conf = data
+            setFontSize(conf['font-size']) //设置字体
+            $("#inputstr").select(); // 选中输入
+        }
+    })
 }
