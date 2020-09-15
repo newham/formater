@@ -347,11 +347,11 @@ function enlargeFont(increase) {
     }
     setFontSize(new_size) // 设置
     setConf(new_size) //更新配置
-    writeConf(conf) // 写入配置文件
 }
 
 function setConf(font_size) {
     conf['font-size'] = font_size
+    writeConf(conf) // 写入配置文件
 }
 
 // 初始化
