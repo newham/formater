@@ -337,7 +337,7 @@ function setFontSize(font_size) {
     $("#translate").css("font-size", font_size)
 }
 
-var conf
+var conf = { 'font-size': 15 } //默认配置文件
 
 function enlargeFont(increase) {
     var old_size = parseInt($("#inputstr").css("font-size"))
@@ -360,7 +360,10 @@ window.onload = () => {
         if (ok) {
             conf = data
             setFontSize(conf['font-size']) //设置字体
-            $("#inputstr").select(); // 选中输入
+        } else {
+            // 首次打开文件不存在，写入默认配置
+            writeConf(conf)
         }
+        $("#inputstr").select(); // 选中输入   
     })
 }

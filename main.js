@@ -5,6 +5,7 @@ var mainWindow = null;
 var os = require('os')
 
 // app.disableHardwareAcceleration(); //debug: AVDCreateGPUAccelerator: Error loading GPU renderer
+app.allowRendererProcessReuse = true
 
 function buildMenu() {
     if (isMacOS()) {

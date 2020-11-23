@@ -23,7 +23,7 @@ function writeConf(confJson, f = console.log) {
             f(err)
             return
         }
-        f('write conf')
+        f('write conf:', confJson)
     })
 }
 
