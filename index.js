@@ -244,7 +244,10 @@ function baiduTrans(copy) {
                 return;
             }
             var result = data.trans_result[0].dst;
-            $("#translate").val(result + '\n\n' + query);
+            if (isTransFull) {
+                result = result + '\n\n' + query
+            }
+            $("#translate").val(result);
             if (copy) {
                 copyText('translate');
             }
