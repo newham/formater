@@ -65,7 +65,7 @@ function openMain() {
             titleBarStyle: "hiddenInset",
             icon: "icon.ico",
             width: 900,
-            minWidth: 600,
+            minWidth: 450,
             height: 600,
             minHeight: 300,
             resizable: true,

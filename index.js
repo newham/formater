@@ -1,4 +1,4 @@
-const { clipboard } = require('electron')
+const { clipboard, remote } = require('electron')
 const { readConf, writeConf } = require('./conf')
 var from = 'en';
 var to = 'zh';
@@ -18,7 +18,7 @@ function paste() {
     StrReplace();
 }
 
-function format() {
+function formatAndTrans() {
     // 检查剪切板是否有内容
     if (clipboard.readText() == "") {
         return
@@ -93,7 +93,7 @@ function StrReplace() {
     }
 
     // $("#inputstr").val(StrInput);
-    //重绘textarea区域
+    // 重绘textarea区域
     // do_resize();
     // if (is_paste) {
     //     copyText('outputstr')
@@ -131,9 +131,11 @@ $(function() {
 });
 
 function copyText(id) {
-    $("#" + id).select(); // 选中文本
+    // $("#" + id).select(); // 选中文本
     // document.execCommand("Copy"); // 执行浏览器复制命令
-    clipboard.writeText($("#" + id).val())
+    var txt = $("#" + id).val()
+    clipboardTxt = txt;
+    clipboard.writeText(txt)
 }
 
 function getCopyType() {
@@ -146,10 +148,12 @@ function getCopyType() {
 }
 
 function showTip(isShow) {
+    // return
     // console.log("progress", isShow)
     if (isShow) {
         $("#progress").show()
-        $("#translate").val(tip);
+
+        // $("#translate").val(tip);
     } else {
         $("#progress").hide()
     }
@@ -172,7 +176,7 @@ function doTranslate() {
     baiduTrans(copy);
 }
 
-//统计字数
+// 统计字数
 function count() {
     var input_count = 0
     var trans_count = 0
@@ -239,12 +243,14 @@ function baiduTrans(copy) {
                 $("#translate").val('空');
                 return;
             }
-            $("#translate").val(data.trans_result[0].dst);
+            var result = data.trans_result[0].dst;
+            $("#translate").val(result + '\n\n' + query);
             if (copy) {
                 copyText('translate');
             }
             showTip(false)
             count(); //显示统计字数
+            transLock = false
         },
         error: function(data) {
             $("#translate").val(data);
@@ -255,7 +261,7 @@ function baiduTrans(copy) {
 }
 
 // function do_resize() {
-//     // alert($(document.body).height() + "," + $(window).height());
+//     alert($(document.body).height() + "," + $(window).height());
 //     h = $(window).height() - $("#title-bar").height();
 //     $("#translate").height(h);
 //     $("#inputstr").height(h);
@@ -266,7 +272,7 @@ function baiduTrans(copy) {
 // do_resize();
 
 var copy_type = true;
-//true 复制译文，false 复制格式化文
+// true 复制译文，false 复制格式化文
 
 function changeTrans(isTrans) {
     if (isTrans == null) {
@@ -311,7 +317,7 @@ var is_paste = false
 $("#inputstr").dblclick(() => {
     // is_paste = true
     // paste()
-    format()
+    formatAndTrans()
 })
 
 $("#translate").dblclick(() => {
@@ -352,6 +358,68 @@ function enlargeFont(increase) {
 function setConf(font_size) {
     conf['font-size'] = font_size
     writeConf(conf) // 写入配置文件
+}
+
+var clipboardTxt = ''
+var transLock = false
+
+function clipboardTrans() {
+    if (transLock) {
+        return false
+    }
+    var txt = clipboard.readText()
+    if (txt != '' && txt != clipboardTxt) {
+        console.log('clipboard')
+        transLock = true
+        formatAndTrans()
+
+        // clipboardTxt = clipboard.readText()
+
+    }
+}
+
+function setFullUI() {
+
+    var btn = $("#btn-switch-full")
+    if (!isTransFull) {
+        $("#right").removeClass('s6')
+        $("#right").addClass('s12')
+        $("#left").hide()
+
+        //按钮
+        btn.addClass("main-color")
+        btn.text('● 剪切板')
+        $("#btn-switch-trans").hide()
+
+        remote.getCurrentWindow().setSize(450, 600)
+    } else {
+        $("#right").removeClass('s12')
+        $("#right").addClass('s6')
+        $("#left").show()
+
+        //按钮
+        btn.removeClass("main-color")
+        btn.text('剪切板')
+        $("#btn-switch-trans").show()
+
+        remote.getCurrentWindow().setSize(900, 600)
+    }
+    isTransFull = !isTransFull
+}
+
+var isTransFull = false
+var clipboardTransId = -1
+
+function fullTrans() {
+    setFullUI()
+
+    // 开始监控剪切板
+    if (isTransFull) {
+        clipboardTxt = clipboard.readText() //防止第一次翻译
+        clipboardTransId = self.setInterval('clipboardTrans()', 100)
+    } else if (clipboardTransId >= 0) {
+        window.clearInterval(clipboardTransId)
+    }
 }
 
 // 初始化

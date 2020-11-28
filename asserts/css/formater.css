@@ -170,7 +170,7 @@ textarea:focus {
     color: #333;
 }
 
-.btn-switch-trans {
+.btn-switch {
     cursor: pointer !important;
     user-select: none;
 }
@@ -193,4 +193,8 @@ textarea:focus {
 
 .l-border {
     border-left: var(--border-h) solid var(--border-color);
+}
+
+#translate {
+    color: var(--second-color);
 }

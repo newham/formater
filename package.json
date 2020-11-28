@@ -1,7 +1,7 @@
 {
     "name": "Formater",
-    "version": "3.5.0",
-    "description": "format & translate chinese/english",
+    "version": "4.0.0",
+    "description": "Format & Translate Chinese/English",
     "main": "main.js",
     "scripts": {
         "start": "electron .",

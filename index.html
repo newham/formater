@@ -12,11 +12,11 @@
 <body>
     <!-- 标题栏 -->
     <div class="title-bar center" id="title-bar" ondblclick="maxWindow()">
-        <a onclick="format()"><i class="material-icons">translate</i></a>
+        <a onclick="formatAndTrans()"><i class="material-icons">translate</i></a>
     </div>
     <!-- 左工具栏 -->
     <div class="tool-bar" style="left: 0px;padding-left: 78px;">
-        <label class="btn-switch-trans left">
+        <label class="btn-switch left">
             <span onclick="clean()" class="span-btn span-btn-danger">ㄨ</span>&nbsp;
             <!-- 字号 -->
             <span onclick="enlargeFont(-1)" class="span-btn">－F</span>
@@ -25,10 +25,13 @@
     </div>
     <!-- 右工具栏 -->
     <div class="tool-bar" style="right: 0px;">
-        <label class="btn-switch-trans" onclick="changeTrans()">
+        <label class="btn-switch" onclick="fullTrans()">
+            <span id="btn-switch-full" class="span-btn">剪切板</span>&nbsp;
+        </label>
+        <label class="btn-switch" onclick="changeTrans()">
             <span id="btn-switch-trans" class="main-color span-btn">● 自动翻译</span>&nbsp;
         </label>
-        <label class="btn-switch-trans">
+        <label class="btn-switch">
             <span id="word_count">0/0</span> 字
         </label>
     </div>
@@ -38,11 +41,11 @@
     </div>
     <!-- 文本域 -->
     <div class="row">
-        <div class="col s6">
+        <div class="col s6" id="left">
             <textarea placeholder="Tips:&#13;&#10;回车→翻译;&#13;&#10;点击中心图标/双击→粘贴&翻译;&#13;&#10;右键→复制." class="full-h" id="inputstr"></textarea>
             <!-- <textarea placeholder="格式化,双击复制" id="outputstr" class="grey lighten-4" readonly></textarea> -->
         </div>
-        <div class="col s6 l-border">
+        <div class="col s6 l-border" id="right">
             <textarea placeholder="Baidu翻译" id="translate" class="full-h" readonly></textarea>
         </div>
     </div>
