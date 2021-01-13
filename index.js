@@ -131,11 +131,10 @@ $(function() {
 });
 
 function copyText(id) {
-    // $("#" + id).select(); // 选中文本
-    // document.execCommand("Copy"); // 执行浏览器复制命令
-    var txt = $("#" + id).val()
+    $(`#${id}`).select(); // 选中文本
+    var txt = $(`#${id}`).val()
     clipboardTxt = txt;
-    clipboard.writeText(txt)
+    clipboard.writeText(txt) // 复制到剪切板
 }
 
 function getCopyType() {
